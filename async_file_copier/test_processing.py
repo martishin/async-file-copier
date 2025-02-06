@@ -34,7 +34,6 @@ async def test_collect_dirs_structure(tmp_path):
     dest = tmp_path / "dest"
     origin.mkdir()
 
-    # Create a directory structure
     first = origin / "First Module"
     first.mkdir()
     second = first / "Second Module"
@@ -44,8 +43,7 @@ async def test_collect_dirs_structure(tmp_path):
 
     dirs_struct = await collect_dirs_structure(origin, dest)
 
-    # Verify the structure
-    assert len(dirs_struct.dirs) == 1  # Only one first-level dir
+    assert len(dirs_struct.dirs) == 1
     first_level = next(iter(dirs_struct.dirs.keys()))
     assert first_level.source == first
     assert first_level.dest == dest / "first_module"
@@ -66,14 +64,12 @@ async def test_copy_code_and_task_files(tmp_path):
     dest_root = tmp_path / "dest"
     source_root.mkdir()
 
-    # Create source file structure
     third = source_root / "Third Module"
     src_dir = third / "src"
     src_dir.mkdir(parents=True)
     (src_dir / "main.rs").write_text("fn main() {}")
     (third / "task.md").write_text("Task content")
 
-    # Create mock DirectoriesStructure
     third_mapping = PathMapping(source=third, dest=dest_root / "third_module")
     second_mapping = PathMapping(
         source=tmp_path / "Second", dest=dest_root / "second_module"
@@ -84,7 +80,6 @@ async def test_copy_code_and_task_files(tmp_path):
 
     await copy_code_and_task_files(dirs_struct, dry_run=False)
 
-    # Verify copied files
     assert (third_mapping.dest.with_suffix(".rs")).exists()
     assert (third_mapping.dest.with_suffix(".md")).exists()
     assert (third_mapping.dest.with_suffix(".rs")).read_text() == "fn main() {}"
