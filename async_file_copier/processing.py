@@ -16,7 +16,6 @@ class PathMapping:
     dest: Path
 
     def __lt__(self, other: "PathMapping") -> bool:
-        """Sort based on the last part of the destination path."""
         return self.dest.name < other.dest.name
 
 
@@ -31,11 +30,6 @@ async def collect_dirs_structure(
     origin_dir: Path,
     dest_dir: Path,
 ) -> DirectoriesStructure:
-    """
-    Collect all modules in a structured dict.
-    - Keeps `source` path as is.
-    - Applies `to_snake_case` to `dest` paths only.
-    """
     result = {}
     first_level_dirs = [
         d for d in origin_dir.iterdir() if d.is_dir() and d.name not in EXCLUDED_FOLDERS
@@ -67,9 +61,6 @@ async def collect_dirs_structure(
 async def copy_code_and_task_files(
     dirs_struct: DirectoriesStructure, dry_run: bool = False
 ):
-    """
-    Copy `src/main.rs` and `task.md` files to the appropriate destination
-    """
     tasks = []
 
     for second_level_to_third_level_dir in dirs_struct.dirs.values():
