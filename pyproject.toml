@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=75.8.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "async-file-copier"
+version = "0.1.0"
+description = "Copy Learn Rust course files into a new repo"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiofiles>=24.1.0",
+]
+authors = [
+    { name = "asmartishin@gmail.com" }
+]
+
+[project.scripts]
+async-file-copier = "async_file_copier.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["async_file_copier"]
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "isort>=6.0.0",
+    "pytest>=8.3.4",
+    "pytest-asyncio>=0.25.3",
+]
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+norecursedirs = ["tmp"]
